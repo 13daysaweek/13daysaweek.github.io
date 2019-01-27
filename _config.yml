@@ -28,15 +28,15 @@ thankyou_page_description: "Your message has been successfully sent. We will con
 
 # Social links
 twitter: '13daysaweek'
-facebook: ''
+facebook: 
 github: '13daysaweek'
-codepen: ''
-dribbble: ''
-medium: ''
-instagram: ''
-pinterest: ''
-linkedin: 'username'
-producthunt: 'christopher-house-8b2a577'
+codepen: 
+dribbble: 
+medium: 
+instagram: 
+pinterest: 
+linkedin: 'christopher-house-8b2a577'
+producthunt: 
 
 # Navigation
 navigation:
