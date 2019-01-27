@@ -17,8 +17,8 @@ ga_analytics: UA-133347879-1
 author:
   name: 'Christopher House'
   image: 'authorimage.jpg'
-  greetings: 'Hi there!'
-  description: "My name is Daniel Bennett. I'm a freelance front-end developer, author and speaker based in Austin, TX. It’s nice to meet you."
+  greetings: 'Welcome!'
+  description: "My name is Chris House, I'm a Cloud Solution Architect for Microsoft, based in Saint Paul, Minnesota."
   bio: 'Chris House is a Cloud Solution Architect for Microsoft, based in Saint Paul, Minnesota.  Over the span of his career, Chris has worked extensively in .Net application development and architecture, integration, and cloud architecture.'
 
 # Contact form setings
