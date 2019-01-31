@@ -14,13 +14,14 @@ steps:
   inputs:
     versionSpec: '>= 2.5'
 
+# Build for production
 - script: |
     gem install bundler
     bundle install --retry=3 --jobs=4
   displayName: 'bundle install'
 
 - script: bundle exec jekyll build
-  displayName: 'bundle exec jekyll build'
+  displayName: 'Build for production environment'
 
 - task: ArchiveFiles@2
   displayName: 'Create _site zip archive'
@@ -28,11 +29,32 @@ steps:
     rootFolderOrFile: '$(Build.SourcesDirectory)/_site/' 
     archiveType: 'zip' # Options: zip, 7z, tar, wim
     includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_production.zip' 
     replaceExistingArchive: true 
 
+# Delete _site contents
+- task: DeleteFiles@1
+  displayName: 'Delete _site contents'
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/_site/'
+    contents: '**' 
+
+# Build for staging
+- script: bundle exec jekyll build --config _config.yml,_config_staging.yml
+  displayName: 'Build for staging environment'
+
+- task: ArchiveFiles@2
+  displayName: 'Create _site zip archive'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/_site/' 
+    archiveType: 'zip' # Options: zip, 7z, tar, wim
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_staging.zip' 
+    replaceExistingArchive: true 
+
+# Publish prod and staging artifacts
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifacts'
+  displayName: 'Publish production and staging build artifacts'
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop' 

@@ -1,0 +1,5 @@
+# Site setings
+favicon: 'assets/images/favicon.ico'
+production_url: https://staging.chrishou.se
+disqus: 'blog-chrishou-se'
+ga_analytics: UA-133347879-1
