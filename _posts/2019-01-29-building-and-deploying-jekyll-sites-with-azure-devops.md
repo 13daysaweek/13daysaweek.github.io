@@ -26,3 +26,5 @@ If you haven't looked at Static Website Hosting in Azure Storage, it's a super e
 
 Enabling this feature in your storage account couldn't be simpler.  To enable through the Azure portal, just navigate to your storage account and find the Static website option.  You'll see a toggle switch that will allow you to enable the feature.  Once enabled, you'll have the option to set a default document and error document name as you can see below.
 ![Azure Storage Static Website Hosting Configuration](/assets/images/posts/2019/jekyll-build/static-site-settings.jpg)
+
+Once you have your static website setup, you'll probably want to add a custom domain and HTTPS to your site.  Adding a custom domain is accomplished by setting up a CNAME record with your DNS provider that points to the HTTP endpoint for your static site.  SSL is a bit trickier.  Your storage account and the HTTP endpoint have a certificate associated with them out of the box, however it's a wildcard certificate provided by Azure for *.web.core.windows.net.  This means that if you use a custom domain
