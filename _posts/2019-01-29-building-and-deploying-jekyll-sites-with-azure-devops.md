@@ -31,6 +31,13 @@ Once you have your static website setup, you'll probably want to add a custom do
 # Deploying to Azure Blob Storage
 So, now that we have our storage account, DNS and SSL configured, we need to think about how we're going to publish content.  Since static site hosting is based on a blob container, we could certainly do a manual upload of files via the Azure portal, but, since I'm a developer at heart, I really want a much more lazy approach.  Keep in mind, when publishing a Jekyll blog, there are really two steps.  The first is building.  This is where Jekyll processes your markdown + templates and outputs static HTML.  The second part is deploying the output from the build process, the contents of your ```_site``` directory.  Thinking about this two step process, it sounds a lot like something that could be done using Azure DevOps build and release pipelines.
 ## Building a Jekyll site in Azure DevOps
+From what I saw getting Jekyll to build and serve on my laptop, I figured building the site in Azure DevOps should be similarly easy...if I could figure out how to get Ruby installed on a build agent.  I assumed that I'd end up having to run a bunch of script tasks to get this happen, but, as it turns out, Azure DevOps already takes care of all of this, via the <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/use-ruby-version?view=azure-devops" target="_blank">UseRubyVersion task</a>.  Using this task in your pipeline will ensure that your agent has the version of Ruby installed that you specify, and that Ruby is in your path.  Beyind getting Ruby installed, there are three other things that we need the pipeline to do:
+
+1. Run ```bundle install``` for both my staging and production configurations
+2. Create a zip file with the production _site directory and another zip file with the staging _site directory
+3. Publish the production and staging zip files as build artifacts.
+
+
 
 ```
 trigger:
