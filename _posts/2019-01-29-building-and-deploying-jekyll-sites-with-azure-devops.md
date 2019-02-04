@@ -37,7 +37,9 @@ From what I saw getting Jekyll to build and serve on my laptop, I figured buildi
 2. Create a zip file with the production _site directory and another zip file with the staging _site directory
 3. Publish the production and staging zip files as build artifacts.
 
+Each of the above steps turned out to be really easy to acomplish using tasks available in build pipelines.  The only piece that required a little additional thought was how to handle a staging and production configuration.  In the end, what I opted to do was to stick my produciton configuration for the site in _config.yml and any overrides that need to be different in staging in a separate file, _config_staging.yml.  Using this approach, when I build the staging site, I can pass in both config files as arguments.  Specifying _config_staging.yml as the second argument will cause any parameters in that file to override paramters of the same name in _config.yml.
 
+Below you can see my final build pipeline:
 
 ```
 trigger:
@@ -100,3 +102,4 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop' 
 ```
+## Deploying with Azure DevOps pipelines
