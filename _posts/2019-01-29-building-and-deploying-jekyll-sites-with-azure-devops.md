@@ -29,4 +29,67 @@ Enabling this feature in your storage account couldn't be simpler.  To enable th
 
 Once you have your static website setup, you'll probably want to add a custom domain and HTTPS to your site.  Adding a custom domain is accomplished by setting up a CNAME record with your DNS provider that points to the HTTP endpoint for your static site.  SSL is a bit trickier.  Your storage account and the HTTP endpoint have a certificate associated with them out of the box, however it's a wildcard certificate provided by Azure for *.web.core.windows.net.  This means that if you use a custom domain, you need a way to also have a certificate that matches your domain name.  The Static Website feature itself doesn't actually support this, however placing Azure CDN in front of your storage account's HTTPS endpoint will allow you to easily add a certificate that matches your custom domain name.  In fact, Azure CDN gives you an option to bring your own certificate or to let Azure provision and manage the certificate lifecycle for you.
 # Deploying to Azure Blob Storage
-So, now that we have our storage account, DNS and SSL configured, we need to think about how we're going to publish content.  Since static site hosting is based on a blob container, we could certainly do a manual upload of files via the Azure portal, but, since I'm a developer at heart, I really want a much more lazy approach.  
+So, now that we have our storage account, DNS and SSL configured, we need to think about how we're going to publish content.  Since static site hosting is based on a blob container, we could certainly do a manual upload of files via the Azure portal, but, since I'm a developer at heart, I really want a much more lazy approach.  Keep in mind, when publishing a Jekyll blog, there are really two steps.  The first is building.  This is where Jekyll processes your markdown + templates and outputs static HTML.  The second part is deploying the output from the build process, the contents of your ```_site``` directory.  Thinking about this two step process, it sounds a lot like something that could be done using Azure DevOps build and release pipelines.
+## Building a Jekyll site in Azure DevOps
+
+```
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+# Set Ruby version to ensure we have Ruby and required tools
+- task: UseRubyVersion@0
+  inputs:
+    versionSpec: '>= 2.5'
+
+# Install bundler on the agent and run 'bundle install'
+- script: |
+    gem install bundler
+    bundle install --retry=3 --jobs=4
+  displayName: 'bundle install'
+
+# Build for production
+- script: bundle exec jekyll build
+  displayName: 'Build for production environment'
+
+# Zip production _site directory
+- task: ArchiveFiles@2
+  displayName: 'Create _site zip archive'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/_site/' 
+    archiveType: 'zip' # Options: zip, 7z, tar, wim
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_production.zip' 
+    replaceExistingArchive: true 
+
+# Delete _site contents
+- task: DeleteFiles@1
+  displayName: 'Delete _site contents'
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/_site/'
+    contents: '**' 
+
+# Build for staging
+- script: bundle exec jekyll build --config _config.yml,_config_staging.yml
+  displayName: 'Build for staging environment'
+
+# Zip staging _site directory
+- task: ArchiveFiles@2
+  displayName: 'Create _site zip archive'
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/_site/' 
+    archiveType: 'zip' # Options: zip, 7z, tar, wim
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_staging.zip' 
+    replaceExistingArchive: true 
+
+# Publish prod and staging artifacts
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish production and staging build artifacts'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop' 
+```
