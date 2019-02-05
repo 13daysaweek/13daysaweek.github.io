@@ -1,15 +1,10 @@
 ---
 layout: page
 title: About
-featured_image: /assets/images/pages/about.jpg
+featured_image: 
 ---
+Hello!  My name is Chris House, I'm a Cloud Solution Architect for Microsoft, based in the Twin Cities of Minnesota.  My area of focus is DevOps and Azure services related to application development.  Prior to joining Microsoft, I have worked in a number of roles related to application development, integration and solution architecture.
 
-Daniel Bennett is a senior developer from Vilnius, Lithuania. After graduating from The College with a degree in **Computer Science**, he worked for three small web shops where he honed his development skills and love for JavaScript.
-
-His work has been recognized by Communication Arts, IBM, How, ID, IdN, AIGA, Effie, Archive, Graphis, AdFed and Rockport. **Net** magazine named him a person to watch in 2018.
-
->The world always seems brighter when you’ve just made something that wasn’t there before. <cite>Neil Gaiman</cite>
-
-As a hobby, Daniel authors the most influential JavaScript blog in Lithuania with over 100,000 page views a month. He lives in Vilnius with his beautiful wife, two boys and one girl.
+Outside of work, my interests include fly fishing for trout on the streams of Minnesota and Wisconsin, cooking, brewing mead and spending time with my wife Amy and our three dachshunds.
 
 *Thank You for reading!*

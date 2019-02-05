@@ -41,7 +41,7 @@ producthunt:
 # Navigation
 navigation:
   - text: About
-    url: /about/
+    url: /about.html
 ##  - text: Style Guide
 ##    url: /style-guide/
 ##  - text: Contact Me
