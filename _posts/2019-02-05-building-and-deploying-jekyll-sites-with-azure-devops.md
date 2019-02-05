@@ -41,7 +41,7 @@ Each of the above steps turned out to be really easy to acomplish using tasks av
 
 Below you can see my final build pipeline:
 
-```
+```YAML
 trigger:
 - master
 
