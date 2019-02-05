@@ -59,8 +59,8 @@ paginate: 5
 paginate_path: /page:num/
 
 # Permalinks
-permalink: /:title
-
+#permalink: /:title
+permalink: /:categories/:title:output_ext
 # Other
 markdown: kramdown
 
