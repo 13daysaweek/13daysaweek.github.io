@@ -103,3 +103,15 @@ steps:
     artifactName: 'drop' 
 ```
 ## Deploying with Azure DevOps pipelines
+Now that we have our build setup and publishing staging and production artifacts, we need a release pipeline to take those artifacts and publish them to the appropriate storage account.  Logically, there are three things I want to have happen in each stage on the release pipeline:
+1. Delete contents of the ```$web``` container (i.e. delete the previous version of the site)
+2. Extract the contents of the zip file that contains the new version of the site
+3. Upload the files from the extracted zip to the ```$web``` container
+
+Once again, Azure DevOps makes this extremely simple.  Here are the tasks I setup in my release stages to achive the above goals.
+### Deleting the contents of $web
+While both build and release pipelines have a task that allow you to move and copy blobs in Azure storage accounts, deleting blobs requires us to use the ```az``` cli.  Setting that task up looks like this:
+![Deleting blob container contents with az cli](/assets/images/posts/2019/jekyll-build/release-step-1.jpg)
+### Extracting Zip File Contents
+Next, we need to extract the contents of our build artifact.  To do this, we'll use the Extract Files task, configured like so:
+![Extract build artifact contents with Extract Files Task](/assets/images/posts/2019/jekyll-build/release-step-2.jpg)
